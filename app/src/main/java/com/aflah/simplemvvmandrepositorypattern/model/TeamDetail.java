@@ -3,11 +3,16 @@ package com.aflah.simplemvvmandrepositorypattern.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.databinding.BindingAdapter;
+import android.widget.ImageView;
 
 import com.google.gson.annotations.SerializedName;
+import com.squareup.picasso.Picasso;
 
 @Entity(tableName = "teamTable")
-public class TeamDetail {
+public class TeamDetail extends BaseObservable {
 
     @PrimaryKey(autoGenerate = true)
     public int mId;
@@ -26,8 +31,14 @@ public class TeamDetail {
         this.teamLogo = teamLogo;
     }
 
+    @Bindable
     public String getTeamName() {
         return teamName;
+    }
+
+    @BindingAdapter({"teamLogo"})
+    public static void loadImage(ImageView view, String imageUrl){
+        Picasso.get().load(imageUrl).into(view);
     }
 
     public void setTeamName(String teamName) {

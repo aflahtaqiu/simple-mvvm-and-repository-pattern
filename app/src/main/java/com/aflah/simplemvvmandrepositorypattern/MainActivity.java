@@ -1,11 +1,13 @@
 package com.aflah.simplemvvmandrepositorypattern;
 
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.aflah.simplemvvmandrepositorypattern.databinding.ActivityMainBinding;
 import com.aflah.simplemvvmandrepositorypattern.model.TeamDetail;
 import com.aflah.simplemvvmandrepositorypattern.viewmodel.TeamViewModel;
 
@@ -20,16 +22,22 @@ public class MainActivity extends AppCompatActivity implements TeamViewModel.Tea
     private TeamBolaAdapter adapter;
     private List<TeamDetail> dataListTeamBola = new ArrayList<>();
 
+    private ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerviewTeamBola);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         teamViewModel = new TeamViewModel(Injection.provideTeamRepository(this), this);
+//        teamViewModel.setTeamNavigator(this);
+//        initAdapter();
+//        teamViewModel.getListTeam();
         teamViewModel.setTeamNavigator(this);
-        initAdapter();
         teamViewModel.getListTeam();
+        binding.setVm(teamViewModel);
+        initAdapter();
     }
 
     @Override
@@ -40,9 +48,10 @@ public class MainActivity extends AppCompatActivity implements TeamViewModel.Tea
 
     public void initAdapter(){
         adapter = new TeamBolaAdapter(this, this.dataListTeamBola);
+        recyclerView = binding.recyclerviewTeamBola;
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.smoothScrollToPosition(0);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
