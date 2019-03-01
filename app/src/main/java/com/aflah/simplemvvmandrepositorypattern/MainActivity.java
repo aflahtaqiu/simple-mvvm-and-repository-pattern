@@ -31,9 +31,6 @@ public class MainActivity extends AppCompatActivity implements TeamViewModel.Tea
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         teamViewModel = new TeamViewModel(Injection.provideTeamRepository(this), this);
-//        teamViewModel.setTeamNavigator(this);
-//        initAdapter();
-//        teamViewModel.getListTeam();
         teamViewModel.setTeamNavigator(this);
         teamViewModel.getListTeam();
         binding.setVm(teamViewModel);
